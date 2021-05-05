@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,11 +31,8 @@ namespace jwtAPIauth.Models
             builder.Entity<ProductInCommand>()
             .HasOne<Command>(e => e.Commands)
             .WithMany(p => p.ProductInCommands);
-
             builder.Entity<Category>().HasKey(c => c.CatID);
-
             base.OnModelCreating(builder);
-
         }
     }
 }

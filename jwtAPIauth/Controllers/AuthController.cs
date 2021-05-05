@@ -60,55 +60,5 @@ namespace jwtAPIauth.Controllers
 
             return Ok(model);
         }
-
-        [HttpPost("AddUser")]
-        public async Task<IActionResult> CreateUser([FromBody] RegisterModel model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _authService.CreateUser(model);
-
-            if (!result.IsAuthenticated)
-                return BadRequest(result.Message);
-
-            return Ok(result);
-        }
-
-        [HttpGet("ListUsers")]
-        public async Task<IEnumerable<ApplicationUser>> GetUsers()
-        {
-            return await _authService.GetUsers();
-        }
-
-        [HttpGet("GetUserByID")]
-        public async Task<ActionResult<ApplicationUser>> GetUser(string id)
-        {
-            return await _authService.GetUser(id);
-        }
-
-        [HttpPut("EditUser")]
-        public async Task<ActionResult> PutUser(string id, [FromBody] ApplicationUser user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            await _authService.EditUser(user);
-
-            return NoContent();
-        }
-
-        [HttpDelete("DeleteUser")]
-        public async Task<ActionResult> DeleteUser(string id)
-        {
-            var UserToDelete = await _authService.GetUser(id);
-            if (UserToDelete == null)
-                return NotFound();
-
-            await _authService.DeleteUser(UserToDelete.Id);
-            return NoContent();
-        }
     }
 }

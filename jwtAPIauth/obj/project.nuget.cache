@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qmyPtElUre657xysad2gtHbNUBaSImouwmPCHovsFa0G4RVQ55VRegMXNUvmLc2Aqf9oq7rmuqAEZ0VlHDdb0w==",
+  "dgSpecHash": "542FiC3ulZ18udHHypudxupki1o/55VM4AGKjz1Pg1TtVJXRDvVvkTzvBMLY3kd9i93PVRT2QDSlFyqmmZJliA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\jwtAPIauth.csproj",
+  "projectFilePath": "C:\\Users\\Youcode\\Documents\\GitHub\\IntelviaStore2\\jwtAPIauth\\jwtAPIauth.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Youcode\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Youcode\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.5\\microsoft.aspnetcore.authentication.jwtbearer.5.0.5.nupkg.sha512",

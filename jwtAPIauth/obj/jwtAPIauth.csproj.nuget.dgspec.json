@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\jwtAPIauth.csproj": {}
+    "C:\\Users\\Youcode\\Documents\\GitHub\\IntelviaStore2\\jwtAPIauth\\jwtAPIauth.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\jwtAPIauth.csproj": {
+    "C:\\Users\\Youcode\\Documents\\GitHub\\IntelviaStore2\\jwtAPIauth\\jwtAPIauth.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\jwtAPIauth.csproj",
+        "projectUniqueName": "C:\\Users\\Youcode\\Documents\\GitHub\\IntelviaStore2\\jwtAPIauth\\jwtAPIauth.csproj",
         "projectName": "jwtAPIauth",
-        "projectPath": "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\jwtAPIauth.csproj",
+        "projectPath": "C:\\Users\\Youcode\\Documents\\GitHub\\IntelviaStore2\\jwtAPIauth\\jwtAPIauth.csproj",
         "packagesPath": "C:\\Users\\Youcode\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\obj\\",
+        "outputPath": "C:\\Users\\Youcode\\Documents\\GitHub\\IntelviaStore2\\jwtAPIauth\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -113,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,65 +1,56 @@
-﻿using jwtAPIauth.Models;
-using jwtAPIauth.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using jwtAPIauth.Dto;
+using jwtAPIauth.Dto.Responses;
+using jwtAPIauth.Dto.Responses.category;
+using jwtAPIauth.IntelviaData;
+using jwtAPIauth.Models;
+
+using jwtAPIauth.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace jwtAPIauth.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class CategoryController : ControllerBase
+    [Route("/api")]
+
+    public class CategoryController : Controller
     {
-        private readonly ICategoryService _catService;
-        public CategoryController(ICategoryService catService)
+        private readonly ICategoryData _categoriesService;
+
+        public CategoryController(ICategoryData categoriesService)
         {
-            _catService = catService;
+            _categoriesService = categoriesService;
         }
 
-        [HttpGet("List Cat")]
-        public async Task<IEnumerable<Category>> GetCategory()
+        [HttpGet]
+        [Route("Category")]
+        public async Task<IActionResult> GetCategories([FromQuery] int page = 1, [FromQuery] int pageSize = 5)
         {
-            return await _catService.GetAll();
+            var categories = await _categoriesService.FetchPage(page, pageSize);
+            var basePath = Request.Path;
+
+            return StatusCodeAndDtoWrapper.BuildSuccess(CategoryListDtoResponse.Build(categories.Item2, basePath,
+                currentPage: page, pageSize: pageSize, totalItemCount: categories.Item1));
         }
 
-        [HttpGet("Category by Id")]
-        public async Task<ActionResult<Category>> GetCat(int id)
+        [HttpPost]
+        [Route("Category")]
+        public async Task<IActionResult> CreateCategory(string name, string description, List<IFormFile> images)
         {
-            return await _catService.GetById(id);
+
+            // If the user sends `images` POST param then the list<IFormFile> will be populated, if the user sends `images[]` instead, then it will be empty
+            // this is why I populate that list with this little trick
+            if (images?.Count == 0)
+                images = Request.Form.Files.GetFiles("images[]").ToList();
+
+            Category category = await _categoriesService.Create(name, description, images);
+            return StatusCodeAndDtoWrapper.BuildSuccess(CategoryDto.Build(category), "Category created successfully");
         }
-
-        [HttpPost("Add Category")]
-        public async Task<ActionResult<Category>> PostCat([FromBody] Category cat)
-        {
-            var newcat = await _catService.Create(cat);
-            return CreatedAtAction(nameof(GetCategory), new { id = newcat.CatID }, newcat);
-        }
-
-        [HttpPut("Update Category")]
-        public async Task<ActionResult> PutCat(int id, [FromBody] Category cat)
-        {
-            if (id != cat.CatID)
-            {
-                return BadRequest();
-            }
-
-            await _catService.Update(cat);
-
-            return NoContent();
-        }
-
-        [HttpDelete("Delete Category")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var catToDelete = await _catService.GetById(id);
-            if (catToDelete == null)
-                return NotFound();
-
-            await _catService.Delete(catToDelete.CatID);
-            return NoContent();
-        }
-
     }
 }

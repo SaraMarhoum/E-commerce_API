@@ -9,8 +9,8 @@ using jwtAPIauth.Models;
 namespace jwtAPIauth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210416102224_updateDB")]
-    partial class updateDB
+    [Migration("20210416101742_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

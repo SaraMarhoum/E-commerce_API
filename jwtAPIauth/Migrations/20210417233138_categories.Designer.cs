@@ -9,8 +9,8 @@ using jwtAPIauth.Models;
 namespace jwtAPIauth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210407154835_seedRoles")]
-    partial class seedRoles
+    [Migration("20210417233138_categories")]
+    partial class categories
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,6 +221,128 @@ namespace jwtAPIauth.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("jwtAPIauth.Models.Category", b =>
+                {
+                    b.Property<int>("CatID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CountProd")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("CatID");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.CategoryImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("CategoryCatID")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OriginalFileName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("isFeaturedImage")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryCatID");
+
+                    b.ToTable("CategoryImage");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Command", b =>
+                {
+                    b.Property<int>("CommandID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("CommandID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Commands");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("CatId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("CategoriesCatID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Stocknb")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.HasIndex("CategoriesCatID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.ProductInCommand", b =>
+                {
+                    b.Property<int>("CommandID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommandID", "ProductID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductInCommands");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -270,6 +392,67 @@ namespace jwtAPIauth.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.CategoryImage", b =>
+                {
+                    b.HasOne("jwtAPIauth.Models.Category", "Category")
+                        .WithMany("CategoryImages")
+                        .HasForeignKey("CategoryCatID");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Command", b =>
+                {
+                    b.HasOne("jwtAPIauth.Models.ApplicationUser", "ApplicationUsers")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.Navigation("ApplicationUsers");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Product", b =>
+                {
+                    b.HasOne("jwtAPIauth.Models.Category", "Categories")
+                        .WithMany()
+                        .HasForeignKey("CategoriesCatID");
+
+                    b.Navigation("Categories");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.ProductInCommand", b =>
+                {
+                    b.HasOne("jwtAPIauth.Models.Command", "Commands")
+                        .WithMany("ProductInCommands")
+                        .HasForeignKey("CommandID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("jwtAPIauth.Models.Product", "Products")
+                        .WithMany("ProductInCommands")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Commands");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Category", b =>
+                {
+                    b.Navigation("CategoryImages");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Command", b =>
+                {
+                    b.Navigation("ProductInCommands");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Product", b =>
+                {
+                    b.Navigation("ProductInCommands");
                 });
 #pragma warning restore 612, 618
         }

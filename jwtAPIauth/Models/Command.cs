@@ -9,7 +9,7 @@ namespace jwtAPIauth.Models
     public class Command
     {
         public int CommandID { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = System.DateTime.Now;
         public string Status { get; set; }
 
         public ApplicationUser ApplicationUsers { get; set; }

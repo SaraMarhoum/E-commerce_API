@@ -50,6 +50,21 @@ namespace jwtAPIauth.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CatID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nom = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    CountProd = table.Column<int>(type: "int", nullable: false),
+                    Picture = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CatID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -155,6 +170,74 @@ namespace jwtAPIauth.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Commands",
+                columns: table => new
+                {
+                    CommandID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Commands", x => x.CommandID);
+                    table.ForeignKey(
+                        name: "FK_Commands_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nom = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    Stocknb = table.Column<int>(type: "int", nullable: false),
+                    Picture = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    CategoriesCatID = table.Column<int>(type: "int", nullable: true),
+                    CatId = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductID);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoriesCatID",
+                        column: x => x.CategoriesCatID,
+                        principalTable: "Categories",
+                        principalColumn: "CatID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductInCommands",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    CommandID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductInCommands", x => new { x.CommandID, x.ProductID });
+                    table.ForeignKey(
+                        name: "FK_ProductInCommands_Commands_CommandID",
+                        column: x => x.CommandID,
+                        principalTable: "Commands",
+                        principalColumn: "CommandID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductInCommands_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +274,21 @@ namespace jwtAPIauth.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Commands_ApplicationUserId",
+                table: "Commands",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInCommands_ProductID",
+                table: "ProductInCommands",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoriesCatID",
+                table: "Products",
+                column: "CategoriesCatID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +309,22 @@ namespace jwtAPIauth.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ProductInCommands");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Commands");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

@@ -1,4 +1,5 @@
 using jwtAPIauth.Helpers;
+using jwtAPIauth.IntelviaData;
 using jwtAPIauth.Models;
 using jwtAPIauth.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,9 +40,6 @@ namespace jwtAPIauth
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICommandService, CommandService>();
 
             services.AddDbContext<ApplicationDbContext>(option =>
             option.UseMySql(Configuration.GetConnectionString("DefaultConnection"))
@@ -68,8 +66,24 @@ namespace jwtAPIauth
                    };
                }
                 );
-
+            services.AddScoped<ICategoryData, SqlCategoryData>();
             //services.AddScoped<IAuthService, AuthService>();
+           services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IStorageService, StorageService>();
+            services.AddScoped<ICategoryData, SqlCategoryData>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            }
+          );
+
+
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

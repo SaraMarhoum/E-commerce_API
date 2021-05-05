@@ -228,6 +228,9 @@ namespace jwtAPIauth.Migrations
                     b.Property<int>("CountProd")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Nom")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -237,6 +240,40 @@ namespace jwtAPIauth.Migrations
                     b.HasKey("CatID");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.CategoryImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("CategoryCatID")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OriginalFileName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("isFeaturedImage")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryCatID");
+
+                    b.ToTable("CategoryImage");
                 });
 
             modelBuilder.Entity("jwtAPIauth.Models.Command", b =>
@@ -355,6 +392,15 @@ namespace jwtAPIauth.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("jwtAPIauth.Models.CategoryImage", b =>
+                {
+                    b.HasOne("jwtAPIauth.Models.Category", "Category")
+                        .WithMany("CategoryImages")
+                        .HasForeignKey("CategoryCatID");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("jwtAPIauth.Models.Command", b =>
                 {
                     b.HasOne("jwtAPIauth.Models.ApplicationUser", "ApplicationUsers")
@@ -390,6 +436,11 @@ namespace jwtAPIauth.Migrations
                     b.Navigation("Commands");
 
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("jwtAPIauth.Models.Category", b =>
+                {
+                    b.Navigation("CategoryImages");
                 });
 
             modelBuilder.Entity("jwtAPIauth.Models.Command", b =>
