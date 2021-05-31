@@ -52,5 +52,37 @@ namespace jwtAPIauth.Controllers
             Category category = await _categoriesService.Create(name, description, images);
             return StatusCodeAndDtoWrapper.BuildSuccess(CategoryDto.Build(category), "Category created successfully");
         }
+
+
+        [HttpGet]
+        [Route("Category by Id")]
+        public async Task<ActionResult<Category>> GetCat(int id)
+        {
+            return await _categoriesService.GetById(id);
+        }
+
+        [HttpPut("Update Category")]
+        public async Task<ActionResult> PutCat(int id, [FromBody] Category cat)
+        {
+            if (id != cat.CatID)
+            {
+                return BadRequest();
+            }
+
+            await _categoriesService.Update(cat);
+
+            return NoContent();
+        }
+
+        [HttpDelete("Delete Category")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var catToDelete = await _categoriesService.GetById(id);
+            if (catToDelete == null)
+                return NotFound();
+
+            await _categoriesService.Delete(catToDelete.CatID);
+            return NoContent();
+        }
     }
 }

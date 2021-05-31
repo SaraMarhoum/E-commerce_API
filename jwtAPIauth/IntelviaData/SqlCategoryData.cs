@@ -89,18 +89,22 @@ namespace jwtAPIauth.IntelviaData
         }
 
 
-        public void Update(Category cat)
+        public async Task Update(Category cat)
         {
             _context.Categories.Update(cat);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var category = FetchById(id);
-            if (category != null)
-            {
-                _context.Categories.Remove(category);
-            }
+            var catToDelete = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(catToDelete);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Category> GetById(int id)
+        {
+            return await _context.Categories.FindAsync(id);
         }
     }
 }

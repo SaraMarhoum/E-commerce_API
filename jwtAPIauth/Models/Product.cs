@@ -13,11 +13,15 @@ namespace jwtAPIauth.Models
         public int Stocknb { get; set; }
         public string Picture { get; set; }
 
+        public int Prix { get; set; }
+
         public Category Categories { get; set; }
 
         [ForeignKey("CatId")]
         public string CatId { get; set; }
 
         public virtual ICollection<ProductInCommand> ProductInCommands { get; set; }
+        public string Message { get; set; }
     }
+
 }

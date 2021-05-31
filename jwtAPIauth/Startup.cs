@@ -40,6 +40,8 @@ namespace jwtAPIauth
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICommandService, CommandService>();
 
             services.AddDbContext<ApplicationDbContext>(option =>
             option.UseMySql(Configuration.GetConnectionString("DefaultConnection"))

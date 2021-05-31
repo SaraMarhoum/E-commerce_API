@@ -14,5 +14,7 @@ namespace jwtAPIauth.Models
 
         [Required, MaxLength(50)]
         public string LastName { get; set; }
+
+        public string Adresse { get; set; }
     }
 }

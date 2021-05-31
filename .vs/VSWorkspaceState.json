@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\jwtAPIauth",
+    "\\jwtAPIauth\\Controllers",
+    "\\jwtAPIauth\\Dto",
+    "\\jwtAPIauth\\Dto\\Responses",
+    "\\jwtAPIauth\\Dto\\Responses\\category",
+    "\\jwtAPIauth\\IntelviaData",
+    "\\jwtAPIauth\\Migrations",
+    "\\jwtAPIauth\\Models",
+    "\\jwtAPIauth\\Services"
   ],
-  "SelectedNode": "\\jwtAPIauth.sln",
+  "SelectedNode": "\\jwtAPIauth\\IntelviaData\\SqlCategoryData.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -10,10 +10,14 @@ namespace jwtAPIauth.IntelviaData
     public interface ICategoryData
     {
         int Count();
-        void Delete(int id);
+       
         Category FetchById(int id);
         void Create(Category cat);
-        void Update(Category cat);
+        Task Update(Category cat);
+        Task Delete(int id);
+
+        Task<Category> GetById(int id);
+
         Task<Tuple<int, List<Category>>> FetchPageWithImages(int page, int pageSize);
 
         Task<Category> Create(string name, string description, List<IFormFile> files,

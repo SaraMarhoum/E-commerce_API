@@ -1,6 +1,7 @@
 ﻿using jwtAPIauth.Helpers;
 using jwtAPIauth.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -18,12 +19,15 @@ namespace jwtAPIauth.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JWT _jwt;
+        private readonly ApplicationDbContext _context;
 
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt)
+
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
+            _context = context;
         }
 
         public async Task<AuthModel> RegisterAsync(RegisterModel model)
@@ -143,6 +147,74 @@ namespace jwtAPIauth.Services
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;
+        }
+
+
+        //Ajouter un user
+        public async Task<AuthModel> CreateUser(RegisterModel model)
+        {
+            if (await _userManager.FindByEmailAsync(model.Email) is not null)
+                return new AuthModel { Message = "Email is already registered!" };
+
+            if (await _userManager.FindByNameAsync(model.Username) is not null)
+                return new AuthModel { Message = "Username is already registered!" };
+
+            var user = new ApplicationUser
+            {
+                UserName = model.Username,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthModel { Message = errors };
+            }
+
+            await _userManager.AddToRoleAsync(user, "User");
+
+            var jwtSecurityToken = await CreateJwtToken(user);
+
+            return new AuthModel
+            {
+                Email = user.Email,
+                ExpiresOn = jwtSecurityToken.ValidTo,
+                IsAuthenticated = true,
+                Roles = new List<string> { "User" },
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                Username = user.UserName
+            };
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetUsers()
+        {
+            return await _userManager.Users.ToListAsync();
+        }
+
+        public async Task<ApplicationUser> GetUser(string id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
+        public async Task EditUser(ApplicationUser user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUser(string id)
+        {
+            var UserToDelete = await _context.Users.FindAsync(id);
+            _context.Users.Remove(UserToDelete);
+            await _context.SaveChangesAsync();
         }
     }
 }
