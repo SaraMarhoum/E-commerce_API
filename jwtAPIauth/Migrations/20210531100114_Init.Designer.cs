@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jwtAPIauth.Models;
 
 namespace jwtAPIauth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210531100114_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,9 +158,6 @@ namespace jwtAPIauth.Migrations
                     b.Property<string>("Adresse")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("CartId")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -239,8 +238,7 @@ namespace jwtAPIauth.Migrations
 
                     b.HasKey("CartID");
 
-                    b.HasIndex("ApplicationUserId")
-                        .IsUnique();
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Carts");
                 });
@@ -402,8 +400,8 @@ namespace jwtAPIauth.Migrations
             modelBuilder.Entity("jwtAPIauth.Models.Cart", b =>
                 {
                     b.HasOne("jwtAPIauth.Models.ApplicationUser", "ApplicationUsers")
-                        .WithOne("Carts")
-                        .HasForeignKey("jwtAPIauth.Models.Cart", "ApplicationUserId");
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
 
                     b.Navigation("ApplicationUsers");
                 });
@@ -462,11 +460,6 @@ namespace jwtAPIauth.Migrations
                     b.Navigation("Commands");
 
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("jwtAPIauth.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Carts");
                 });
 
             modelBuilder.Entity("jwtAPIauth.Models.Cart", b =>

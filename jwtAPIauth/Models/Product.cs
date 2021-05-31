@@ -21,6 +21,9 @@ namespace jwtAPIauth.Models
         //public string CatId { get; set; }
 
         public virtual ICollection<ProductInCommand> ProductInCommands { get; set; }
+
+        public virtual ICollection<ProductInCart> ProductInCarts { get; set; }
+
         public string Message { get; set; }
 
     }

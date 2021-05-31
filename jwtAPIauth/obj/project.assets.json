@@ -4906,11 +4906,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\jwtAPIauth.csproj",
+      "projectUniqueName": "C:\\Users\\Youcode\\Desktop\\E-commerce_API\\jwtAPIauth\\jwtAPIauth.csproj",
       "projectName": "jwtAPIauth",
-      "projectPath": "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\jwtAPIauth.csproj",
+      "projectPath": "C:\\Users\\Youcode\\Desktop\\E-commerce_API\\jwtAPIauth\\jwtAPIauth.csproj",
       "packagesPath": "C:\\Users\\Youcode\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Youcode\\source\\repos\\jwtAPIauth\\jwtAPIauth\\obj\\",
+      "outputPath": "C:\\Users\\Youcode\\Desktop\\E-commerce_API\\jwtAPIauth\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

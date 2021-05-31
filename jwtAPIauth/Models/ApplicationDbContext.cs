@@ -17,7 +17,9 @@ namespace jwtAPIauth.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Command> Commands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<ProductInCommand> ProductInCommands { get; set; }
+        public virtual DbSet<ProductInCart> ProductInCarts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -32,6 +34,20 @@ namespace jwtAPIauth.Models
             builder.Entity<ProductInCommand>()
             .HasOne<Command>(e => e.Commands)
             .WithMany(p => p.ProductInCommands);
+
+
+
+            builder.Entity<ProductInCart>()
+            .HasKey(e => new { e.CartID, e.ProductID });
+
+            builder.Entity<ProductInCart>()
+            .HasOne<Product>(e => e.Products)
+            .WithMany(p => p.ProductInCarts);
+
+            builder.Entity<ProductInCart>()
+            .HasOne<Cart>(e => e.Carts)
+            .WithMany(p => p.ProductInCarts);
+
 
             builder.Entity<Category>().HasKey(c => c.CatID);
 
